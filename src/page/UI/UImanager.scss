@@ -1,0 +1,32 @@
+
+.item{
+    padding:20px;
+    position:relative;
+    .b_text{
+        position:absolute;
+        bottom:0;
+        left:0;
+        right:0;
+        text-align:center;
+    }
+    .editBtn{
+        display: none;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 19%;
+        left: 19%;
+        background-color: #3d3d3d;
+        opacity: 0.4;
+        color: #fff;
+        font-weight: bold;
+        width: 64px;
+        border-radius: 5px;
+        height: 64px;
+        cursor: pointer;
+    }
+    &:hover .editBtn{
+        cursor: pointer;
+        display: flex;
+    }
+}

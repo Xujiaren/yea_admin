@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./assets/js/flex.js"></script>
+    <link rel="stylesheet" href="./assets/css/normalize.css">
+    <link rel="stylesheet" href="./assets/css/common.css">
+    <link rel="stylesheet" href="./assets/css/staticCourse.css">
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <script src="https://unpkg.com/callapp-lib"></script>
+    <title>资讯详情</title>
+</head>
+<body>
+    <div class='root'>
+        <section class='course_img'>
+            <section class="down">
+                <div class='icon_wrap'>
+                    <img class='icon_you' src='./assets/img/you_icon.png'/>
+                    <span class='icon_txt'>油葱学堂</span>
+                </div>
+                <div class='down_btn' id='btn_top'>立即打开</div>
+            </section>
+        </section>
+        <section class="img_wrap">
+            <img class='img_item' src="" />
+        </section>
+        <section class='info'>
+            <div class="title"></div>
+            <div class="user flex align_center">
+                <!-- 头像-->
+                <!-- <div 
+                    class='s_avatar'
+                    style="background-image: url(https://edu-uat.oss-cn-shenzhen.aliyuncs.com/images/2bca3c02-7f92-45b4-9676-d13fdcd94674.jpg)"
+                >
+                </div> -->
+                 <!-- 姓名-->
+                <span class='text_more username' style='padding-left:0'>发布时间</span>
+
+                <!-- 发布时间   如果没有老师 时间前面加一个这个 -->
+                <span class="time"></span>
+            </div>
+            <div class="content" id='content'>
+                  
+            </div>
+        </section>
+       
+        <section class='study flex ai_ct jc_ct' id='btn_bottom'>
+            <span>打开APP</span>
+        </section>
+    </div>
+    <script src="./assets/js/jquery-3.4.1.min.js"></script>
+    <script>
+        var ua = navigator.userAgent.toLowerCase();
+        // var host = 'https://perfect.whalew.com/api'
+        var host = 'https://teach.perfect99.com/api'
+        
+        function wxShare(appId,timestamp,nonceStr,signature){
+            wx.config({
+                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: appId, // 必填，公众号的唯一标识
+                timestamp: timestamp, // 必填，生成签名的时间戳
+                nonceStr: nonceStr, // 必填，生成签名的随机串
+                signature: signature,// 必填，签名
+                jsApiList: [
+                    'updateAppMessageShareData',
+                    'updateTimelineShareData'
+                ] // 必填，需要使用的JS接口列表
+            });
+        }
+        function onWxShare(data){
+            const {articleImg,summary,pubTimeFt,title} = data
+            if(typeof wx !== 'undefined'){
+                wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+                    wx.updateAppMessageShareData({ 
+                        title: title||'', // 分享标题
+                        desc: summary||'', // 分享描述
+                        link: window.location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                        imgUrl: articleImg||'', // 分享图标
+                        success: function () {
+                            // alert('分享成功')
+                        },
+                        fail: function (res) {
+                            // alert('分享失败')
+                        }
+                    })
+                    wx.updateTimelineShareData({
+                        title: title||'', // 分享标题
+                        link: window.location.href, 
+                        imgUrl: articleImg||'', // 分享图标
+                        success: function () {
+                            // alert('分享成功')
+                        },
+                        fail: function (res) {
+                            // alert('分享失败')
+                        }
+                    })
+                })
+                wx.error(function (res) {
+                    
+                });
+            }
+        }
+        function filterStatus(response) {
+            if (response.status >= 200 && response.status < 300) {
+                return response
+            } else {
+                if(response.statusText){
+                    let error = new Error(response.statusText);
+                    error.response = response;
+                    error.type = 'http';
+                    throw error;
+                }else{
+                    console.log(response)
+                }
+            }
+        }
+        function filterJSON(response) {
+            return response.json();
+        }
+        function resolved(data){
+            const {articleImg,content,pubTimeFt,title} = data
+            $('.img_item').attr('src',articleImg)
+            $('.title').text(title)
+            $('.time').text(pubTimeFt)
+            $('#content').html(content)
+        }
+        function getQueryVariable(variable){
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i=0;i<vars.length;i++) {
+                    var pair = vars[i].split("=");
+                    if(pair[0] == variable){return pair[1];}
+            }
+            return(false);
+        }
+        (function(){
+            
+            
+            var id = getQueryVariable('id')
+            // var plant = getQueryVariable('plant')
+            var title = getQueryVariable('title')||''
+            var scheme = 'perfectapp://article/'+id+'/'+title
+
+            if(id!==false){
+                fetch(host + '/article/' + id, {
+                    method: 'get',
+                    mode: 'cors',
+                    credentials: 'include',
+                    headers: {
+                            'API-XUID':1,
+                            'ORIGIN-PLANT':'wx',
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                }).then(filterStatus).then(filterJSON).then((res)=>{
+                    if(res.status){
+                        resolved(res.data)
+                        onWxShare(res.data)
+                    }
+                    if(ua.indexOf("micromessenger")>-1)
+                    fetch(host + '/config/jssdk?url=' + encodeURIComponent(window.location.href), {
+                        method: 'get',
+                        mode: 'cors',
+                        credentials: 'include',
+                        headers: {
+                            'API-XUID':1,
+                            'ORIGIN-PLANT':'wx',
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                    }).then(filterStatus).then(filterJSON).then((res)=>{
+                        // alert(JSON.stringify(res))
+                        if(res.status){
+                            const {
+                                appId,
+                                nonceStr,
+                                signature,
+                                timestamp
+                            } = res.data
+                            wxShare(appId,timestamp,nonceStr,signature)
+                        }
+                    })
+                })
+
+                const options = {
+                    scheme: {
+                        protocol: 'perfectapp'
+                    },
+                    intent: {
+                        package: 'com.perfectapp',
+                        scheme: 'perfectapp'
+                    },
+                    appstore: 'https://www.apple.com/ios/app-store/',
+                    yingyongbao: 'https://a.app.qq.com/o/simple.jsp?pkgname=com.perfectapp&ios_scheme='+ encodeURIComponent(scheme) +'&android_scheme='+ encodeURIComponent(scheme),
+                    fallback: 'https://a.app.qq.com/o/simple.jsp?pkgname=com.perfectapp&ios_scheme='+ encodeURIComponent(scheme) +'&android_scheme='+ encodeURIComponent(scheme),
+                };
+                const callLib = new CallApp(options);
+
+                function toApp() {
+
+                    if (ua.match(/(iphone|ipod|ipad);?/i)){
+                        try {
+                            window.location.href = scheme ;
+                            setTimeout(function () {
+                                window.location = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.perfectapp&ios_scheme='+ encodeURIComponent(scheme) +'&android_scheme='+ encodeURIComponent(scheme)
+                            }, 500);
+                        } catch (e) {
+
+                        }
+                    }else{
+                        callLib.open({
+                            param: {},
+                            path: 'article/'+id+'/'+title,
+                        });
+                        // alert(callLib.generateScheme({
+                        //     param: {},
+                        //     path: 'course/'+id,
+                        // }))
+                        // alert(callLib.generateIntent({
+                        //     param: {},
+                        //     path: 'course/'+id,
+                        // }))
+                    }
+                }
+                $('#btn_bottom').on('click',()=>{
+                    toApp()
+                })
+                $('#btn_top').on('click',()=>{
+                    toApp()
+                })
+            }
+        })();
+    </script>
+</body>
+</html>

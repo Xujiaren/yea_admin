@@ -1,0 +1,17 @@
+
+@import '../../../assets/scss/inc';
+.bf-audio-player{
+  audio{
+    width: 480px;
+    max-width: 80vw;
+    margin: 0 10px 10px 10px;
+  }
+}
+.bf-poster{
+  background-size: contain !important;
+  background-position:0 !important;
+  opacity: 1 !important;
+}
+.poster-setting{
+  cursor: pointer;
+}

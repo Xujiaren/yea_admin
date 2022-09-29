@@ -1,0 +1,67 @@
+*{
+    padding:0px;
+    margin:0px;
+}
+html{
+    font-family: Arial, Helvetica, sans-serif,PingFangSC-Semibold,"Microsoft Yahei";
+    font-size:16px;
+    background:rgb(226, 226, 226) !important;
+}
+body{
+    height: 100%;
+    max-width: 750px;
+    margin:0 auto;
+    padding:0;
+}
+ul{
+    list-style: none;
+    padding:0;
+}
+a{
+    color:#222;
+}
+a:hover,a:active{
+    color:rgb(222, 222, 222);
+    text-decoration: none;
+}
+p,h4,ul{
+    margin:0;
+}
+/* 工具辅助类 */
+.hide{
+    opacity: 0;
+    display: none;
+}
+.w-1280{
+    max-width: 1280px;
+    margin:0 auto;
+}
+.p-t-200{
+    padding-top:200px;
+}
+.p-t-100{
+    padding-top:100px;
+}
+.m-t-10{
+    margin-top:10px;
+}
+.pull-left{
+    float: left;
+}
+.pull-right{
+    float: right;
+}
+.clearfix::before,.clearfix::after{
+    display: table;
+    content: " ";
+    font-size: 0;
+}
+.clearfix{
+    clear: both;
+}
+
+
+.root{
+    background: rgb(255, 255, 255);
+    width:100%;
+}

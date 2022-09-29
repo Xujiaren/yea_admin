@@ -1,0 +1,16 @@
+视频、音频、图文、直播课程导入
+http://perfect.whalew.com/admin/course/import
+file: (binary)
+course_id: 602
+
+
+活动ctype: 2
+专题ctype: 15
+资讯ctype: 11
+http://perfect.whalew.com/admin/activity/user/apply/import
+
+
+资格认证培训班stype=2、线下培训班stype=3、O2O培训班stype=0
+http://perfect.whalew.com/admin/squad/user/apply/import
+file: (binary)
+squad_id: 229

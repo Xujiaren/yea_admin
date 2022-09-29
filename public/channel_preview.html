@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./assets/js/flex.js"></script>
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/normalize.css">
+    <link rel="stylesheet" href="./assets/css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" href="./assets/css/common.css">
+    <link rel="stylesheet" href="./assets/css/channel.css">
+    
+    <title>专栏预览</title>
+</head>
+<body>
+    <div class='root'>
+        <section class='type_one'>
+            <div class="title_wrap">
+                <div class="title"></div>
+                <div class="f_r arrow">全部课程 ></div>
+            </div>
+            <div class='item_wrap'>
+
+            </div>
+        </section>
+
+    </div>
+    <script src="./assets/js/jquery-3.4.1.min.js"></script>
+	<script src="./assets/js/bootstrap.min.js"></script>
+    <script src="./assets/js/swiper-3.4.2.jquery.min.js"></script>
+    <script>
+        function genTmp_one({courseImg,chapter,courseName,summary,teacherName,hit}){
+            if(hit>10000){
+                 hit /= 10000;
+                 hit = Math.floor(hit)
+                 hit +='万'
+            }
+
+            return tmp = `
+                <div class="item">
+                    <div class="img_wrap_type_1">
+                        <img class="item_img" src="${courseImg}">
+                        <div class="hit">
+                            ${chapter}讲
+                        </div>
+                    </div>
+                    <div class="info_wrap">
+                        <p class='course_name text_more'>${courseName}</p>
+                        <p class="sum text_more">${summary}</p>
+                    </div>
+                    <div class="course_belong">
+                        <div class='text_bottom'>
+                            <img class="per_icon" src="./assets/img/per_icon.png" alt="">
+                            &nbsp;${teacherName}
+                        </div>
+                        <div class='text_bottom'>
+                            <img class="play_icon" src="./assets/img/pay_icon.png" alt="">
+                            &nbsp;${hit}人已学
+                        </div>
+                    </div>
+                </div>
+                
+            `
+        }
+        function genTmp_two({courseImg,chapter,courseName,summary,teacherName,hit}){
+            if(hit>10000){
+                 hit /= 10000;
+                 hit = Math.floor(hit)
+                 hit +='万'
+            }
+            if(summary.length>22){
+                summary =summary.slice(0,22)+'...'
+            }
+            return tmp = `
+                <div class="item_two">
+                    <div class="img_wrap">
+                        <img class="item_two_img" src="${courseImg}">
+                        <div class="hit">
+                            ${chapter}讲
+                        </div>
+                    </div>
+                    
+                    <div class='right_wrap'>
+                        <div class="info_wrap">
+                            <p class='course_name_two text_more'>${courseName}</p>
+                            <p class="sum_two">${summary}</p>
+                        </div>
+                        <div class="course_belong">
+                            <div class='text_bottom'>
+                                <img class="per_icon" src="./assets/img/per_icon.png" alt="">
+                                &nbsp;${teacherName}
+                            </div>
+                            <div class='text_bottom'>
+                                <img class="play_icon" src="./assets/img/pay_icon.png" alt="">
+                                &nbsp;${hit}人已学
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
+        }
+        function filterStatus(response) {
+            if (response.status >= 200 && response.status < 300) {
+                return response
+            } else {
+                if(response.statusText){
+                    let error = new Error(response.statusText);
+                    error.response = response;
+                    error.type = 'http';
+                    throw error;
+                }else{
+                    console.log(response)
+                }
+                
+            }
+        }
+        function filterJSON(response) {
+            return response.json();
+        }
+        function filterResult(result) {
+            console.log(result)
+
+            if (result.errorCode == '1') {
+                throw result.errorMsg;
+            } else {
+                if(result.errorMsg)
+                    return result.errorMsg
+                else
+                    return result.resultBody;
+            }
+        }
+        window.onload=()=>{
+            let search = location.search.replace('?')
+            let channel_id = search.split('&')[0].split('=').pop()
+            let name = decodeURI(search.split('&')[1].split('=').pop())
+            let type = search.split('&')[2].split('=').pop()
+
+            async function getData(){
+                let data = await fetch('https://teach.perfect99.com/admin/course/channel/'+channel_id+'/course/', {
+                    method: 'get',
+                    mode: 'cors',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                }).then(filterStatus).then(filterJSON).then(filterResult);
+
+                $('.title').text(name)
+                data.data.map((ele,index)=>{
+                    let {courseImg,chapter,courseName,summary,teacherName,hit} = ele
+                    if(!type||type == 0){
+                        if(index>=4) return;
+                        $('.item_wrap').append(genTmp_one({courseImg,chapter,courseName,summary,teacherName,hit}))
+                    }else{
+                        if(index>=3) return;
+                        $('.item_wrap').append(genTmp_two({courseImg,chapter,courseName,summary,teacherName,hit}))
+                    }
+                })
+                
+            }
+            
+            getData()
+        }
+    </script>
+</body>
+</html>

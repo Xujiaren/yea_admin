@@ -1,0 +1,51 @@
+.wrap{
+    flex-wrap: wrap;
+    .medal_wrap{
+        width: 200px;
+        text-align: center;
+        .m_img{
+            width: 60px;
+            height: 60px;
+        }
+        
+        .medal_txt{
+            font-size: 12px;
+            color:#929292;
+            padding: 10px 0;
+        }
+    }
+    .auth_wrap{
+        width: 388px;
+        height: 233px;
+        margin: 20px;
+        text-align: center;
+        position: relative;
+        .m_img{
+            position: absolute;
+            top:0;
+            bottom:0;
+            left:0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .medal_name{
+            font-size: 12px;
+            color: #646464;
+            padding: 10px 0;
+            position: absolute;
+            z-index: 88;
+            bottom: 45%;
+            width: 100%;   
+        }
+        .medal_txt{
+            font-size: 12px;
+            color: #929292;
+            padding: 10px 0;
+            position: absolute;
+            z-index: 88;
+            bottom: -38px;
+            width: 100%;
+        }
+    }
+}

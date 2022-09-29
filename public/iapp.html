@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>翻牌抽奖</title>
+    <link rel="stylesheet" href="css/style.css?v=20200729012" />
+
+    
+    <!--传统的流式布局-->
+</head>
+<body>
+    <div class='wrap' id="wrap">
+        <div class='wrap_box'>
+            <div class="lucky_bg">
+                <img src="image/lucky_bg.png" class="lucky_bg" />
+            </div>
+
+            <div class="deckcons">
+                <div class="deckboxs">
+                    <div id="allParent" class="Y-content" ></div>
+                </div>
+                <!-- 按钮 -->
+                <div class="wrap_btns">
+                    <div class="wrap_btn" id="rulebtns">
+                        <p class="btn_title">翻牌规则</p>
+                    </div>
+                    <div class="wrap_btn" id="filpbtns">
+                        <p class="btn_title">中奖记录</p>
+                    </div>
+                </div>
+
+                <!-- <div class="wrap_btns">
+                    <div class="wrap_btn" id="nolucky">
+                        <p class="btn_title">再接再厉</p>
+                    </div>
+                    <div class="wrap_btn" id="integelbtns">
+                        <p class="btn_title">获取金币</p>
+                    </div>
+                    <div class="wrap_btn" id="giftbtns">
+                        <p class="btn_title">获取礼品</p>
+                    </div>
+                </div> -->
+
+
+                <div id="bosx"></div>
+                <!-- 中奖名单 -->
+                <div class="winBoxs">
+                    <div class="winBox_cover">
+                        <img src="image/win_title.png"  class="winBox_img" />
+                    </div>
+                    <div class="winLists" id="winLists">
+                        <ul></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="layerParent" id="layerParent">
+                <img class="layerImg"  id='layerImg'/>
+            </div>
+            <div class="layer_btn" id="layer_btn"></div>
+        </div>
+        <div class="tipIntegral">
+            <p id="Intergral"><span id="tpintegral"></span><span id="tplettery"></span></p>
+        </div>
+    </div>
+    <!--js-->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/rem.js"></script>
+    <!--页面抽奖流程相关js-->
+    <script type="text/javascript" src="js/rotate.js"></script>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js" ></script>
+    <script type="text/javascript" src="js/time.js"></script>
+    <script type="text/javascript">
+
+        var noEle = [];
+	    var ts = new Date().getTime();
+
+        $('#layerImg').attr("src",'https://edu-uat.oss-cn-shenzhen.aliyuncs.com/images/$activity_img.png?v='+ `${ts}` )
+
+        var test = window.location.href;
+        var testArr = test.split('=')
+        var integral = testArr[testArr.length-2];
+        var integralnum = integral.split('&')[0];
+        var lettery = testArr[testArr.length-1];
+
+        $('#tpintegral').html('当前金币 '+ integralnum);
+        $('#tplettery').html('  获得抽奖次数'+ lettery);
+
+
+	    
+
+
+        $.getJSON('https://perfect.whalew.com/api/activity/flop/1?ts=' + ts, function(res){
+            var html = "";
+            var winhtml = "";
+            var luckyList = res.data.item;
+            var winLists = res.data.ritem;
+
+            for (var i = 0 ; i < luckyList.length ; i++) {
+                    if (luckyList[i].itemNum == 0) {
+                        noEle.push(i);
+                    }
+
+                    var index = i + 1;
+                    html += "<div class='item i" + index + "'>";
+                    html += "<div class='parent'>";
+                    html += "<div class='face'>";
+                    html += "<div class='jpBox'>";
+                    html += "<img alt='" + luckyList[i].itemName + "' data-index='" + luckyList[i].itemIndex + "' data-ctype='" + luckyList[i].ctype + "'  style='width: 100%;height: 100%' " +  "src= " + luckyList[i].itemImg  +" >";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='back'>";
+                    html += "<img  style='width: 100%;height: 100%' src='image/btnback.png'>";
+                    html += "</div>";
+                    html += "</div></div>";
+            }
+
+
+            for(var i = 0 ; i < winLists.length ; i++){
+                winhtml += "<li class='win_p'>" + winLists[i].nickname + getDateDiff(winLists[i].pubTime * 1000) + "获得了" + winLists[i].itemName + "</li>";
+            }
+
+            $("#allParent").html(html);
+            $("#winLists ul").html(winhtml);
+
+            var obj =  $("#allParent").rotateEx({
+                noFaceEle: noEle,
+                maxNumCall:function(){
+                },
+                clickAmtStart:function(o1,o2,o3){
+                    var data = {
+                        index: $(o3).find('img').data('index'),
+                        img: $(o3).find('img').attr('src'),
+                        name: $(o3).find('img').attr('alt'),
+                        ctype: $(o3).find('img').data('ctype')
+                    };
+
+		    data = JSON.stringify(data);
+                    window.ReactNativeWebView.postMessage(`reward&${data}`);
+
+                },
+                clickAmtEnd:function(o1,o2){
+                },
+                changeAmtCall:function(o1,o2){
+                    obj.reset();
+                }
+            });
+
+            $('#layer_btn').on('click',function(){
+                $("#layerParent").hide();
+                $("#layer_btn").hide();
+                obj.toBack()
+            })
+
+	    });
+
+    </script>
+    <script type="text/javascript">
+
+        $(function(){
+
+            // 向上滚动
+            var listPanel = $('#winLists ul');
+            var z = 0;//向上滚动top值
+            function up() {//向上滚动
+                listPanel.animate({//中奖结果
+                    'top': (z - 35) + 'px'
+                }, 1500, 'linear', function () {
+                    listPanel.css({'top': '0px'})
+                    .find("li:first").appendTo(listPanel);
+                    up();
+                });
+            }up();
+
+
+
+             //跳转规则页面
+             $("#rulebtns").on('click',function(){
+                window.ReactNativeWebView.postMessage("navigation&ActRule");
+            })
+            // 跳转中奖记录页面 
+            $("#filpbtns").on('click',function(){
+                window.ReactNativeWebView.postMessage("navigation&FilpCards");
+            })
+
+        })
+        
+    </script>
+
+</body>
+</html>

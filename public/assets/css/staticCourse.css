@@ -1,0 +1,258 @@
+html{
+    height: 100%
+}
+body{
+    background: #FAFAFA;
+}
+
+.flex{
+    display: flex;
+}
+.jc_sb{
+    justify-content: space-between;
+}
+.ai_ct{
+    align-items: center;
+}
+.jc_ct{
+    justify-content: center;
+}
+.nowrap{
+    flex-wrap: nowrap;
+}
+
+.study{
+    height: 0.44rem;
+    background: #F4623F;
+    color:#fff;
+    font-size: 0.16rem;
+    bottom: 0;
+
+    width: 100%;
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 10000000;
+    position: fixed;
+}
+.course_img .down .down_btn{
+    background:#F4623F;
+    color:#fff;
+    font-size: 12px;
+    border: none;
+    padding: 0.05rem;
+    border-radius: 0.05rem;
+}
+.course_img .down .icon_txt{
+    font-size:0.14rem;
+    font-weight: bold;
+    color:#333333;
+}
+.course_img{
+    width: 100%;
+    background: #fff;
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+    z-index: 1;
+    position: fixed;
+}
+.course_img .down{
+    height: 0.44rem;
+    padding:0.06rem 0.09rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background:#FFF6C9;
+}
+.course_img .down .icon_wrap{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+.course_img .down .icon_you{
+    width: 0.32rem;
+    height: 0.32rem;
+    border-radius: 50%;
+    margin-right: 0.09rem;
+}
+
+.root{
+    background: #FAFAFA;
+    position: relative;
+    
+    box-sizing: border-box;
+}
+.info{
+    padding:0.15rem;
+    padding-top:0;
+    padding-bottom: 0.44rem;
+}
+.absolute{
+    position: absolute;
+    top:0;
+    height: 2.52rem;
+}
+.img_wrap{
+    padding-top:0.56rem;
+    width:100%;
+    height: 1.45rem;
+    position: relative;
+}
+.img_item{
+    width: 100%;
+    height: 100%;
+}
+.ban-img{
+    width:100%;
+    height: 1.45rem;
+}
+.title{
+    padding:0.15rem 0;
+    font-size:0.16rem;
+    font-weight:600;
+    color:rgba(51,51,51,1);
+}
+.s_avatar{
+    height: 0.2rem;
+    width: 0.2rem;
+    border-radius: 50%;
+    background-position: center;
+    background-size: 100% auto;
+}
+.flex{
+    display: flex;
+}
+.align_center{
+    align-items: center;
+}
+.username,.time{
+    font-size:0.14rem;
+    font-weight:400;
+    color: #999999;
+    height: 0.2rem;
+    line-height: 0.2rem;
+}
+.username{
+    padding: 0 0.1rem;
+    color:rgba(51,51,51,1);
+}
+.content{
+    padding:0.2rem 0;
+    font-size:0.14rem;
+    font-weight:400;
+    color:rgba(51,51,51,1);
+    line-height:0.2rem;
+}
+.comment{
+    border-top:1px solid #EEEEEE;
+    padding: 0.1rem 0;
+}
+.comment_wrap{
+    position: relative;
+}
+.fade{
+    filter: blur(4px);
+}
+.com_title{
+    padding-bottom: 0.15rem;
+    font-size:0.16rem;
+    font-weight:600;
+    color:rgba(51,51,51,1);
+    line-height:0.22rem;
+}
+.com_avatar{
+    width: 0.35rem;
+    height: 0.35rem;
+    margin-right: 0.1rem;
+}
+.com_avatar{
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+.com_info{
+    flex:1;
+}
+.com_user_wrap{
+    
+}
+.com_user{
+    font-size:0.14rem;
+    font-weight:400;
+    color:rgba(51,51,51,1);
+}
+.thumb_icon{
+    height:0.14rem;
+    
+}
+.align_end{
+    align-items: flex-end
+}
+.thumb_num{
+    padding-left:0.05rem;
+    font-size:0.12rem;
+    font-weight:400;
+    color:rgba(153,153,153,1);
+    line-height:0.1rem;
+}
+.justify_space_between{
+    justify-content: space-between
+}
+.com_content{
+    font-size:0.14rem;
+    font-weight:400;
+    color:rgba(51,51,51,1);
+    line-height:0.2rem;
+    padding:0.05rem 0;
+}
+.star_item{
+    width: 0.15rem;
+    height: 0.15rem;
+}
+
+.com_time{
+    height: 0.15rem;
+    padding-left: 0.15rem;
+    font-size:0.1rem;
+    font-weight:400;
+    line-height: 0.16rem;
+    color:rgba(153,153,153,1);
+}
+.star_wrap{
+    margin-top:0.05rem;
+}
+.com_li{
+    padding:0.1rem 0
+}
+.com_li+.com_li{
+    border-top: 1px solid #EEEEEE
+}
+.show_more{
+    font-size:0.12rem;
+    font-weight:400;
+    color:rgba(102,102,102,1);
+    padding:0.1rem 0;
+    text-align: center;
+    width: 100%;
+    display: block;
+    border-top: 1px solid #EEEEEE;
+}
+.reply{
+    font-size:0.14rem;
+    font-weight:400;
+    color:rgba(132,99,88,1);
+    line-height:0.2rem;
+    background:rgba(244,244,244,1);
+    padding:0.08rem 0.12rem;
+
+}
+.media-wrap img{
+    max-width: 100%
+}
+video{
+    width: 100%
+}
+p{
+    padding: 0.1rem 0;
+}

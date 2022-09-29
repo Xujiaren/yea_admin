@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title></title>
+
+	<link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+	<link rel="shortcut icon" href="%PUBLIC_URL%/favicon">
+	<script src=https://edu-uat.oss-cn-shenzhen.aliyuncs.com/static/pdf.min.js></script>
+	<script src="%PUBLIC_URL%/ckplayer/ckplayer/ckplayer.js"></script>
+	<script src="./plugins/lib/es6-promise.min.js"></script>
+	<script src="./plugins/lib/aliyun-oss-sdk-5.3.1.min.js"></script>
+	<script src="./plugins/aliyun-upload-sdk-1.5.0.min.js"></script>
+
+	<script>
+		function onBridgeReady(){
+			window.WeixinJSBridge = WeixinJSBridge
+		}
+
+		var ua = navigator.userAgent.toLowerCase();
+        if (ua.indexOf("micromessenger")>-1)
+			if (typeof WeixinJSBridge == "undefined"){
+				if( document.addEventListener ){
+					document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+				}else if (document.attachEvent){
+					document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+					document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+				}
+			}else{
+				onBridgeReady();
+			}
+	</script>
+	<script>
+		window.onload = function () {
+			window.ckplayer = ckplayer;
+		}
+	</script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+		// Shared ID
+		gtag('config', 'UA-118965717-3');
+		// React.js ID
+		gtag('config', 'UA-118965717-6');
+	</script>
+</head>
+
+<body>
+	<noscript>
+		You need to enable JavaScript to run this app.
+	</noscript>
+	<div id="root"></div>
+</body>
+
+</html>

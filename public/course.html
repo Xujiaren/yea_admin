@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./assets/js/flex.js"></script>
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/normalize.css">
+    <link rel="stylesheet" href="./assets/css/common.css">
+    <link rel="stylesheet" href="./assets/css/course.css">
+    <script src="https://unpkg.com/callapp-lib"></script>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <meta itemprop="name" property="og:title" content="分享标题">
+    <meta property="og:url" content="分享链接">
+    <meta itemprop="image" property="og:image" content="https://edu-uat.oss-cn-shenzhen.aliyuncs.com/images/pdt4ezn51600414155293.png">
+    <meta name="description" itemprop="description" property="og:description" content="分享描述">
+    <title></title>
+</head>
+<body>
+    <div class='root'>
+        <section class='course_img'>
+            <section class="down">
+                <div class='icon_wrap'>
+                    <img class='icon_you' src='./assets/img/you_icon.png'/>
+                    <span class='icon_txt'>油葱学堂</span>
+                </div>
+                <button class='down_btn' id='btn_top'>立即打开</button>
+            </section>
+            <img class="the_img" src="">
+        </section>
+
+        <section class='info'>
+            <div class="course_name">
+                
+            </div>
+            <div class='rate_wrap flex jc_sb ai_ct'>
+                <div class="flex ai_ct nowrap">
+                    <div class="star_wrap flex ai_ct" id='rate_slot'>
+                       
+                    </div>
+                    <span class='rate_txt' id='rate_info'></span>
+                </div>
+                <div class="rate_txt" id='study_info'></div>
+            </div>
+            <div class="course_info">
+                <p class='the_title'>课程介绍</p>
+                <p class="c_intro" id='course_intro'>
+                    
+                </p>
+            </div>
+            <div class="course_info">
+                <p class='the_title'>课程章节<span class="chapter_totle" id='totle_chapter'></span></p>
+                <p class="c_intro" id='chapter'>
+                    
+                </p>
+            </div>
+        </section>
+        <section class='study flex ai_ct jc_ct' id='btn_bottom'>
+            <span>开始学习</span>
+        </section>
+    </div>
+    <script src="./assets/js/jquery-3.4.1.min.js"></script>
+    <script>
+        var ua = navigator.userAgent.toLowerCase();
+        // var host = 'https://perfect.whalew.com/api'
+        var host = 'https://teach.perfect99.com/api'
+        
+        function wxShare(appId,timestamp,nonceStr,signature){
+            wx.config({
+                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: appId, // 必填，公众号的唯一标识
+                timestamp: timestamp, // 必填，生成签名的时间戳
+                nonceStr: nonceStr, // 必填，生成签名的随机串
+                signature: signature,// 必填，签名
+                jsApiList: [
+                    'updateAppMessageShareData',
+                    'updateTimelineShareData'
+                ] // 必填，需要使用的JS接口列表
+            });
+        }
+        function onWxShare(data){
+            const {content,courseName,courseImg} = data
+            if(typeof wx !== 'undefined'){
+                wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+                    wx.updateAppMessageShareData({ 
+                        title: courseName||'', // 分享标题
+                        desc: content||'', // 分享描述
+                        link: window.location.href,
+                        imgUrl: courseImg||'', // 分享图标
+                        success: function () {
+                            // alert('分享成功')
+                        },
+                        fail: function (res) {
+                            // alert('分享失败')
+                        }
+                    })
+                    wx.updateTimelineShareData({
+                        title: courseName||'', // 分享标题
+                        link: window.location.href, 
+                        imgUrl: courseImg||'', // 分享图标
+                        success: function () {
+                            // alert('分享成功')
+                        },
+                        fail: function (res) {
+                            // alert('分享失败')
+                        }
+                    })
+                })
+                wx.error(function (res) {
+                    
+                });
+            }
+        }
+		function getQueryVariable(variable){
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i=0;i<vars.length;i++) {
+                    var pair = vars[i].split("=");
+                    if(pair[0] == variable){return pair[1];}
+            }
+            return(false);
+        }
+        (function(){
+
+            $('#rate_slot').html(renderRate(5))
+            var id = getQueryVariable('id')
+            var title = getQueryVariable('title')||''
+            var fallback = getQueryVariable('fallback')
+            var scheme = 'perfectapp://course/'+id+'/'+title
+
+            if(id!==false){
+                fetch(host + '/course/' + id, {
+                    method: 'get',
+                    mode: 'cors',
+                    credentials: 'include',
+                    headers: {
+                        'API-XUID':1,
+                        'ORIGIN-PLANT':'wx',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                }).then(filterStatus).then(filterJSON).then((res)=>{
+                    if(res.status){
+                        resolved(res.data)
+                        onWxShare(res.data)
+                    }
+                    if(ua.indexOf("micromessenger")>-1)
+                    fetch(host + '/config/jssdk?url=' + encodeURIComponent(window.location.href), {
+                        method: 'get',
+                        mode: 'cors',
+                        credentials: 'include',
+                        headers: {
+                            'API-XUID':1,
+                            'ORIGIN-PLANT':'wx',
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                    }).then(filterStatus).then(filterJSON).then((res)=>{
+                        if(res.status){
+                            const {
+                                appId,
+                                nonceStr,
+                                signature,
+                                timestamp
+                            } = res.data
+                            wxShare(appId,timestamp,nonceStr,signature)
+                        }
+                    })
+                })
+                
+                const options = {
+                    scheme: {
+                        protocol: 'perfectapp'
+                    },
+                    intent: {
+                        package: 'com.perfectapp',
+                        scheme: 'perfectapp'
+                    },
+                    appstore: 'https://www.apple.com/ios/app-store/',
+                    yingyongbao: 'https://a.app.qq.com/o/simple.jsp?pkgname=com.perfectapp&ios_scheme='+ encodeURIComponent(scheme) +'&android_scheme='+ encodeURIComponent(scheme),
+                    fallback: 'https://a.app.qq.com/o/simple.jsp?pkgname=com.perfectapp&ios_scheme='+ encodeURIComponent(scheme) +'&android_scheme='+ encodeURIComponent(scheme),
+                };
+                const callLib = new CallApp(options);
+                console.log(callLib.ge)
+                function toApp() {
+
+                    if (ua.match(/(iphone|ipod|ipad);?/i)){
+                        try {
+                            window.location.href = scheme;
+                            setTimeout(function () {
+                                window.location = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.perfectapp&ios_scheme='+ encodeURIComponent(scheme) +'&android_scheme='+ encodeURIComponent(scheme)
+                            }, 500);
+                        } catch (e) {
+
+                        }
+                    }else{
+                        callLib.open({
+                            param: {},
+                            path: 'course/'+id+'/'+title,
+                        });
+                        // alert(callLib.generateScheme({
+                        //     param: {},
+                        //     path: 'article/'+id,
+                        // }))
+                        // alert(callLib.generateIntent({
+                        //     param: {},
+                        //     path: 'article/'+id,
+                        // }))
+                    }
+                }
+                
+                $('#btn_bottom').on('click',()=>{
+                    toApp()
+                })
+                $('#btn_top').on('click',()=>{
+                    toApp()
+                })
+            }
+        })();
+
+       
+        function filterStatus(response) {
+            if (response.status >= 200 && response.status < 300) {
+                return response
+            } else {
+                if(response.statusText){
+                    let error = new Error(response.statusText);
+                    error.response = response;
+                    error.type = 'http';
+                    throw error;
+                }else{
+                    console.log(response)
+                }
+                
+            }
+        }
+        function filterJSON(response) {
+            return response.json();
+        }
+        function resolved(data){
+            const {content,courseName,score,courseImg,chapter,chapterList,hit,teacherId,teacher} = data
+
+            $("head").append('<meta content="'+courseImg+'" itemprop="image">');
+            $("head").append('<meta type="description" content="'+content+'">');
+            $("head").append('<meta type="name" content="'+courseName+'">');
+            
+            $("title").html(courseName);
+
+            $('.course_name').text(courseName||'')
+            $('#rate_info').text(('综合评分 '+score)||'综合评分 5')
+            $('#study_info').text(`共${chapter}讲 ${hit}人已学`)
+            $('.the_img').attr('src',courseImg)
+            $('#rate_slot').html(renderRate(score))
+            $('.rate_wrap').after(teacherRender(teacher,teacherId))
+            $('#course_intro').text(content)
+            
+            $('#totle_chapter').text(`共${chapter}讲`)
+            if(Array.isArray(chapterList)){
+                $('#chapter').html(chapterRender(chapterList))
+            }
+        }
+        function renderRate(rate){
+            
+            rate = Math.floor(parseInt(rate))
+            return `
+                <img src='./assets/img/star_icon.png' class='rate_icon ${rate>=1?'light':''}'>
+                <img src='./assets/img/star_icon.png' class='rate_icon ${rate>=2?'light':''}'>
+                <img src='./assets/img/star_icon.png' class='rate_icon ${rate>=3?'light':''}'>
+                <img src='./assets/img/star_icon.png' class='rate_icon ${rate>=4?'light':''}'>
+                <img src='./assets/img/star_icon.png' class='rate_icon ${rate>=5?'light':''}'>
+            `
+            
+        }
+        function chapterRender(chapter){
+            
+            if(chapter.length == 0){
+                return ''
+            }else if(chapter.length == 1){
+                let c_tmp = chapter[0].child.map((ele,index)=>{
+                    return `
+                    <li class='${index==0?'selected':''}' style='padding:0.05rem 0'>
+                        <div class='chapter_title'>
+                            <div class='chapter_name_wrap'>
+                                <img class="c_img" src='./assets/img/playing.png'/>
+                                <div class="chapter_name">${ele.chapterName} ${ele.content}</div>
+                            </div>
+                            <div class='time'>${forTime(ele.duration)}</div>
+                        </div>
+                    </li>`
+                })
+                return '<ul>' + c_tmp.join('') + '</ul>'
+            }else{
+                const tmp = chapter.map((ele,index)=>{
+                    let title = `
+                        <div class='chaper_head'>
+                            <span>${ele.chapterName} ${ele.content}</span>
+                        </div>
+                    `
+                    let c_tmp = ele.child.map((_ele,_index)=>{
+                        return `
+                        <li class='${index==0&&_index==0?'selected':''}' style='padding:0.05rem 0'>
+                            <div class='chapter_title'>
+                                <div class='chapter_name_wrap'>
+                                    <img class="c_img" src='./assets/img/playing.png'/>
+                                    <div class="chapter_name">${_ele.chapterName} ${_ele.content}</div>
+                                </div>
+                                <div class='time'>${forTime(_ele.duration)}</div>
+                            </div>
+                        </li>`
+                    })
+                    return title + '<ul>' + c_tmp.join('') + '</ul>'
+                    
+                })
+                return '<div>' + tmp.join('') + '</div>'
+            }
+            
+        }
+        
+        function teacherRender(teacher,teacherId){
+            let tmp = ''
+            if(teacherId){
+                const {teacherName,teacherImg,honor,userImg} = teacher
+                tmp =`
+                    <div class="teacher">
+                        <div class="clearfix">
+                            <img class="t_avatar" src=${teacherImg||userImg}>
+                            
+                            </img>
+                            <div class="t_name">
+                                <p>讲师：${teacherName}</p>
+                            </div>
+                        </div>
+                        <div class="t_info">
+                            ${honor}
+                        </div>
+                    </div>
+                `
+            }
+            return tmp
+        }
+        // 格式化时间
+        function forTime (duration) {
+            const time = duration;
+            const  h = Math.floor(time / 3600);
+            const  m = Math.floor((time / 60 % 60));
+            const  s = Math.floor((time % 60));
+            
+
+            if(time < 60){
+                return   s + "秒";
+            } else if(60 < time  && time < 3600){
+                return  m + "分钟" + s + "秒";
+            } else if (time > 3600){
+                return  h + "小时" + m + "分钟" + s + "秒";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+// If you want to override variables do it here
+@import "variables";
+
+// Import styles
+@import "~@coreui/coreui/scss/coreui.scss";
+
+// Temp fix for reactstrap
+@import '~@coreui/coreui/scss/_dropdown-menu-right.scss';
+
+// If you want to add something do it here
+@import "custom";
+
+// ie fixes
+@import "ie-fix";
+.app-header .nav-item{
+    min-width: 70px;
+}
+.sidebar .nav-dropdown-toggle {
+    position: relative;
+    background: #2f353a;
+}
+.sidebar .nav-link.active {
+    color: #fff;
+    background: #1b5f77 !important;
+}
+.sidebar .nav-link.active .nav-icon {
+    color: #fff !important;
+}
+.card {
+    border:none;
+    box-shadow: 0 0 6px 2px #d8d8d8;
+}
+body{
+    background-color: #f5f6fa !important;
+}
+// .ant-card{
+//     -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.035);
+//     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.035);
+// }
+.main .container-fluid {
+    padding: 0 15px;
+}
+.breadcrumb{
+    margin-bottom:15px;
+}
+.header-fixed .app-header {
+    z-index: 20 !important;
+}
+.anticon {
+    vertical-align: 0.2em !important;
+}
+.ant-input:focus {
+    box-shadow: none !important;
+}
+
+.head-example {
+    width: 80px;
+    height: 60px;
+    border-radius: 4px;
+    background: #eee;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left:20px;
+}
+.todo-block{
+    width: 110px;
+    margin-left: -5px;
+}
+.head-example-img{
+    width: 64px;
+    height: 35px;
+    background: #f1f1f1;
+    display: block;
+    margin:10px 0;
+}
+.disc{
+    width: 64px !important;
+    height: 64px !important;
+}
+.teacher-img{
+    width: 64px;
+    height: 35px;
+    background: #d2d2d2;
+    display: inline-block;
+    margin: 0 auto;
+}
+.ant-input-group{
+    width:auto !important;
+}
+.ant-select-disabled {
+    color:#717171 !important;
+}
+.ant-input-disabled {
+    color:#717171 !important;
+}
+.ant-modal-close,.ant-drawer-close{
+    outline-style: none !important;
+}
+.table th, .table td {
+    vertical-align: middle;
+}
+
+// .ant-input-group .ant-input[disabled]{
+//     background-color:#fff !important;
+// }
+.add .ant-form-item{
+    // margin: 10px !important;
+}
+.ad-img{
+    display: inline-block;
+    width: 160px;
+    height: 80px;
+    background: #d2d2d2;
+}
+.ant-advanced-search-form .ant-form-item-label{
+    font-weight: bold !important;
+}
+.ant-advanced-search-form .ant-form-item{
+    display: flex !important;
+    margin-bottom:5px !important;
+}
+.ant-advanced-search-form .ant-form-item-label{
+    flex-shrink: 0;
+}
+.ant-form-item-with-help {
+    margin-bottom: 12px !important;
+}
+.video_content{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    border: none !important;
+    width: 210px;
+}
+
+// .ant-input[disabled]{
+//     background-color:#fff !important;
+//     cursor: default !important;
+// }
+.ant-input-number-disabled {
+    background-color: #ffffff !important;
+}
+.ant-switch-loading, .ant-switch-disabled {
+    cursor: default !important;
+    opacity: 1 !important;
+}
+// .ant-select-disabled .ant-select-selection {
+//     background: #ffffff !important;
+//     cursor: default !important;
+// }
+.ant-radio-disabled .ant-radio-inner::after {
+    background-color: rgb(52, 144, 255) !important;
+}
+
+.ant-form-item-control {
+    position: relative;
+    line-height: 40px;
+    zoom: 1;
+    color: #8c8c8c !important;
+}
+// .ant-card-extra{
+//     padding:0 !important;
+// }
+.ant-btn{
+    border-radius: 2px !important;
+}
+.ant-input{
+    border-radius: 2px !important;
+}
+.ant-select-selection{
+    border-radius: 2px !important;
+}
+.role_table th,.role_table td{
+    vertical-align: initial;
+}
+.role_table td>div{
+    height: 30px;
+}
+.p_border{
+    border: 1px solid #e4e4e4;
+    padding: 5px;
+}
+.chart_pos{
+    position: relative;
+}
+.fix_wrap{
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+}
+.static_card{
+    min-height: 350px;
+    min-width: 500px;
+}
+.mb_0{
+    margin-bottom:0 !important;
+}
+.table thead th {
+    vertical-align: bottom;
+    border-top: 1px solid #c8ced3;
+    border-bottom: none;
+}
+.table td+td{
+    border-top: 1px solid #c8ced3;
+}
+.sidebar-fixed .sidebar{
+    z-index:8 !important;
+}
+.tips{
+    font-size: 12px;
+    color:#737373;
+}
+@media (max-width: 575.98px){
+
+    .sidebar-show .main::before, .aside-menu-show .main::before {
+        display: none !important;
+    }
+
+}
+.block_lock::after{
+    content: ' ';
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top:0;
+    bottom:0;
+    left:0;
+    right: 0;
+    background: #8c8c8c;
+    opacity: 0.1;
+    z-index: 999;
+}
+.w200{
+    max-width: 250px;
+}
+
+@media (max-width: 1299px){
+    .col-xl-6 {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+}
+@media (min-width: 1300px){
+    .col-xl-6 {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+}
+

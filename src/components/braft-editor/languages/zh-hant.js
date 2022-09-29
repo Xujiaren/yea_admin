@@ -1,0 +1,76 @@
+export default {
+  base: {
+    remove: '刪除',
+    cancel: '取消',
+    confirm: '確定',
+    inert: '插入',
+    width: '寬度',
+    height: '高度'
+  },
+  controls: {
+    clear: '清除内容',
+    undo: '復原',
+    redo: '取消復原',
+    fontSize: '字型大小',
+    color: '顏色',
+    textColor: '文字顏色',
+    backgroundColor: '背景顏色',
+    tempColors: '臨時顏色',
+    bold: '粗體',
+    lineHeight: '行高',
+    letterSpacing: '字間距',
+    textIndent: '段落縮進',
+    increaseIndent: '增加縮進',
+    decreaseIndent: '减少縮進',
+    border: '邊框',
+    italic: '斜體',
+    underline: '底線',
+    strikeThrough: '刪除線',
+    fontFamily: '字體',
+    textAlign: '文字對齊',
+    alignLeft: '置左',
+    alignCenter: '置中',
+    alignRight: '置右',
+    alignJustify: '左右對齊',
+    floatLeft: '左浮動',
+    floatRight: '右浮動',
+    superScript: '上標',
+    subScript: '下標',
+    removeStyles: '清除樣式',
+    headings: '標題',
+    header: '標題',
+    normal: '常規',
+    orderedList: '有序列表',
+    unorderedList: '無序列表',
+    blockQuote: '引用',
+    code: '程式碼',
+    link: '連結',
+    unlink: '清除連結',
+    hr: '水平線',
+    media: '媒體',
+    mediaLibirary: '媒體庫',
+    emoji: '表情符號',
+    fullscreen: '全螢幕',
+    exitFullscreen: '退出全螢幕',
+  },
+  linkEditor: {
+    textInputPlaceHolder: '輸入連結文字',
+    linkInputPlaceHolder: '輸入連結地址',
+    inputWithEnterPlaceHolder: '輸入連結地址並換行',
+    openInNewWindow: '在新視窗打開',
+    removeLink: '移除連結'
+  },
+  audioPlayer: {
+    title: '播放音檔'
+  },
+  videoPlayer: {
+    title: '播放影片',
+    embedTitle: '嵌入式媒體'
+  },
+  media: {
+    image: '圖片',
+    video: '影片',
+    audio: '音檔',
+    embed: '嵌入式媒體'
+  }
+}
